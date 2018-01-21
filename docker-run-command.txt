@@ -1,0 +1,1 @@
+docker run -itd -v ~/pivx:/home/pivx/.pivx -p 51472:51472 pivx:3.0.6

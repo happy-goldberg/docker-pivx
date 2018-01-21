@@ -1,0 +1,1 @@
+docker build --build-arg PIVX_VERSION=3.0.6 -t pivx:3.0.6 .
