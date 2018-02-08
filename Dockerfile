@@ -12,33 +12,28 @@ RUN apt-get update && apt-get install -y software-properties-common \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
     build-essential \
-    apache2-suexec-custom \
     automake \
-    autotools-dev \
     bsdmainutils \
-    cmake \
     git \
-    gpgv \
+    gnupg2 \
     libboost-all-dev \
     libdb4.8-dev \
     libdb4.8++-dev \
     libevent-dev \
-    libprotobuf-dev \
-    libqt5gui5 \
-    libqt5core5a \
-    libqt5dbus5 \
     libssl-dev \
     libtool \
     pkg-config \
-    protobuf-compiler \
-    qttools5-dev \
-    qttools5-dev-tools \
-    unzip \
-    wget 
+    wget
 
 WORKDIR /tmp
+
+#install su-exec
+RUN git clone https://github.com/ncopa/su-exec.git \
+ && cd su-exec && make && cp su-exec /usr/local/bin/ \
+ && cd .. && rm -rf su-exec
+
 # add pivx user to the system
-RUN adduser -h /home/"${USER}" -s /bin/sh -G users -D "${USER}"
+RUN useradd -d /home/"${USER}" -s /bin/sh -G users "${USER}"
 
 # download source
 RUN wget -O /tmp/pivx-"${VERSION}".tar.gz "https://github.com/PIVX-Project/PIVX/releases/download/v"${VERSION}"/pivx-"${VERSION}".tar.gz" \
@@ -49,6 +44,7 @@ ADD https://raw.githubusercontent.com/f-u-z-z-l-e/docker-coin-scripts/master/alp
 RUN chmod +x verify-sha256.sh && ./verify-sha256.sh SHA256SUMS.asc pivx-"${VERSION}".tar.gz
 
 # verify gpg signature
+RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys 3BDCDA2D87A881D9
 RUN gpg --keyserver-options auto-key-retrieve --verify SHA256SUMS.asc
 
 # compile binaries
