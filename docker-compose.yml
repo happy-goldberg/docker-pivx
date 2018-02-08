@@ -1,0 +1,23 @@
+version: '3'
+  
+services:
+  pivx-qt:
+    image: fuzzle/pivx:3.0.6
+    container_name: "pivx-qt"
+    network_mode: "bridge"
+    environment:
+      - DISPLAY=$DISPLAY
+    volumes:
+      - '~/pivx:/pivx'
+      - '/tmp/.X11-unix:/tmp/.X11-unix'
+    stdin_open: true
+    tty: true
+    command: /usr/local/bin/pivx-qt
+
+  pivx:
+    image: fuzzle/pivx:3.0.6
+    container_name: "pivx"
+    network_mode: "bridge"
+    volumes:
+      - '~/pivx:/pivx'
+

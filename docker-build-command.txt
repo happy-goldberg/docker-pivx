@@ -1,1 +1,1 @@
-docker build --build-arg PIVX_VERSION=3.0.6 -t pivx:3.0.6 .
+docker build --build-arg VERSION=3.0.6 -t fuzzle/pivx:3.0.6 .
