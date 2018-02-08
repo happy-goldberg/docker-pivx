@@ -8,7 +8,7 @@ services:
     environment:
       - DISPLAY=$DISPLAY
     volumes:
-      - '~/pivx:/pivx'
+      - '~/pivx:/home/pivx'
       - '/tmp/.X11-unix:/tmp/.X11-unix'
     stdin_open: true
     tty: true
@@ -19,5 +19,5 @@ services:
     container_name: "pivx"
     network_mode: "bridge"
     volumes:
-      - '~/pivx:/pivx'
+      - '~/pivx:/home/pivx'
 
