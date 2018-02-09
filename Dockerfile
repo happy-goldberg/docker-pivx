@@ -2,7 +2,7 @@ FROM ubuntu:xenial
 
 MAINTAINER Andreas Lingenhag <11538311+alingenhag@users.noreply.github.com
 
-# switch to root, let the entrypoint drop back to pivx user
+# switch to root, let the entrypoint drop back to configured user
 USER root
 ENV USER pivx
 ARG VERSION
@@ -41,7 +41,7 @@ RUN git clone https://github.com/ncopa/su-exec.git \
  && cd su-exec && make && cp su-exec /usr/local/bin/ \
  && cd .. && rm -rf su-exec
 
-# add pivx user to the system
+# add user to the system
 RUN useradd -d /home/"${USER}" -s /bin/sh -G users "${USER}"
 
 # download source
