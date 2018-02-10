@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:artful
 
 MAINTAINER Andreas Lingenhag <11538311+alingenhag@users.noreply.github.com
 
@@ -27,12 +27,13 @@ RUN apt-get update && apt-get install -y software-properties-common \
 
 # dependencies for qt-gui
 RUN apt-get install -y --no-install-recommends \
+    libqrencode-dev \
     libqt5gui5 \
     libqt5core5a \
     libqt5dbus5 \
+    protobuf-compiler \
     qttools5-dev \
-    qttools5-dev-tools \
-    protobuf-compiler
+    qttools5-dev-tools
 
 WORKDIR /tmp
 
@@ -49,7 +50,7 @@ RUN wget -O /tmp/pivx-"${VERSION}".tar.gz "https://github.com/PIVX-Project/PIVX/
  && wget -O /tmp/SHA256SUMS.asc "https://github.com/PIVX-Project/PIVX/releases/download/v"${VERSION}"/SHA256SUMS.asc"
 
 # verify sha hash
-ADD https://raw.githubusercontent.com/f-u-z-z-l-e/docker-coin-scripts/master/alpine/verify-sha256.sh /tmp/
+ADD https://raw.githubusercontent.com/f-u-z-z-l-e/docker-coin-scripts/master/verify-sha256.sh /tmp/
 RUN chmod +x verify-sha256.sh && ./verify-sha256.sh SHA256SUMS.asc pivx-"${VERSION}".tar.gz
 
 # verify gpg signature
@@ -63,7 +64,8 @@ RUN tar xzpvf pivx-"${VERSION}".tar.gz \
   && ./configure \
   && make -j8 \
   && make install \
-&& cd ~ && rm -rf /tmp/pivx-"${VERSION}"
+  && cd ~ \
+  && rm -rf /tmp/pivx-"${VERSION}"
 
 EXPOSE 51470
 
